@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <GameCanvas/>
+    <GameCanvas id="gameCanvas"/>
   </div>
 </template>
 
@@ -15,3 +15,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
