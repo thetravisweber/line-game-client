@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "vue": "^2.6.14",
+    "vue-p5": "^0.8.4",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2"
   },

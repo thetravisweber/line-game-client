@@ -2823,6 +2823,11 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
+p5@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/p5/-/p5-0.10.2.tgz#9437b28e803b9c8a94383c6b5f4d05b13603e1cc"
+  integrity sha512-kZnC7JllCEnEUTB3sv2iETUg1ulNvB60h3MHb63u7W/nCJc3XIlMGXcKk28cuezdQ7TOlKScm0qmWCsol+302Q==
+
 param-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/param-case/-/param-case-3.0.4.tgz#7d17fe4aa12bde34d4a77d91acfb6219caad01c5"
@@ -3983,6 +3988,13 @@ vue-loader@^17.0.0:
     chalk "^4.1.0"
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
+
+vue-p5@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/vue-p5/-/vue-p5-0.8.4.tgz#bdee6eefca7e1985d6ed1124e6d5d9e4a005004e"
+  integrity sha512-hYwOAICez8F5ojj12E6xJzCrQ+W/Dcc6DJF3FCyI1wVGXZDireckWUmQramzsAMggoE2SHKOzy7kh8gQ46A0IQ==
+  dependencies:
+    p5 "^0.10.2"
 
 vue-router@^3.5.1:
   version "3.5.3"
