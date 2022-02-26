@@ -1,6 +1,6 @@
 <template>
   <!-- <vue-p5 @sketch="sketch"></vue-p5> -->
-  <vue-p5 v-on="{setup, draw}"></vue-p5>
+  <vue-p5 v-on="{setup, draw, keypressed}"></vue-p5>
 </template>
 
 <script>
@@ -25,7 +25,8 @@ export default {
       TIME_WIDTH: 60,
       MAX_PRICE_HISTORY: MAX_PRICE_HISTORY,
       nextPrice: startPrice,
-      p5: null
+      p5: null,
+      connection: null,
     };
   },
 
@@ -61,16 +62,15 @@ export default {
         );
       });
       p.endShape();
-
-      this.addPrice();  
     },
 
-    mapPrice: function (price) {
+    mapPrice (price) {
       return this.p5.map(price, 0, 200, this.p5.height, 0);
     },
 
-    addPrice: function () {
-      this.currentPrice += this.p5.random(-1, 1);
+    addPrice (price) {
+      console.log("adding price");
+      this.currentPrice = price;
       this.prices.push({
         price: this.currentPrice,
         time: Date.now(),
@@ -80,18 +80,49 @@ export default {
       }
     },
 
-    keyPressed: function (e) {
+    keypressed (e) {
+      console.log(this.prices);
+      console.log("key got pressed");
       switch (e.key) {
         case "b":
-          this.currentPrice += 10;
+          console.log("buying");
+          this.sendMessage("b");
           break;
         case "s":
-          this.currentPrice -= 10;
+          console.log("shorting");
+          this.sendMessage("s");
           break;
       }
     },
+
+    sendMessage: function (message) {
+      this.connection.send(message);
+    },
+
+    messageRecieved (message) {
+      const parsed = parseInt(message.data, 10);
+      if (!isNaN(parsed)) {
+        this.addPrice(parsed);
+      } else {
+        console.log("is not an integer");
+      }
+    }
   },
 
+  created: function() {
+    // console.log("Setting Key Binds");
+    // window.addEventListener('keydown', (e) => {this.keyPressed(e)});
+
+    console.log("Starting connection");
+    this.connection = new WebSocket("ws://localhost:7071");
+
+    this.connection.onopen = function(event) {
+      console.log(event);
+      console.log("Successfully connected to Websocket Server");
+    }
+
+    this.connection.onmessage = this.messageRecieved;
+  }
 };
 </script>
 
