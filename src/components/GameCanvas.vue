@@ -9,22 +9,17 @@ import VueP5 from 'vue-p5';
 export default {
   
   data: function () {
-    let startPrice = 100;
-    const MAX_PRICE_HISTORY = 400;
+    // 1k per second
+    const TIME_SPAN = 30000; // in ms
     let prices = [];
-    let base = {
-      price: startPrice,
+    prices[0] = {
+      price: 100,
       time: Date.now(),
     };
-    for (let i = 0; i < MAX_PRICE_HISTORY; i++) {
-      prices[i] = base;
-    }
     return {
-      currentPrice: startPrice,
+      currentPrice: 100,
       prices: prices,
-      TIME_WIDTH: 60,
-      MAX_PRICE_HISTORY: MAX_PRICE_HISTORY,
-      nextPrice: startPrice,
+      TIME_SPAN: TIME_SPAN,
       p5: null,
       connection: null,
     };
@@ -42,7 +37,7 @@ export default {
         sketch.windowHeight
       );
       sketch.background(200, 200, 200);
-      sketch.frameRate(60);
+      sketch.frameRate(25);
     },
 
     draw(p) {
@@ -54,14 +49,22 @@ export default {
       p.stroke(0);
       p.noFill();
       p.beginShape();
+      if (this.prices.length == 0) {
+        console.log("no prices");
+        return;
+      }
       p.vertex(0, this.mapPrice(this.prices[0].price));
-      this.prices.forEach((priceStamp, index) => {
-        p.curveVertex(
-          p.width * ((index/(this.MAX_PRICE_HISTORY-2))),
-          this.mapPrice(priceStamp.price)
+      let now = Date.now();
+      this.prices.forEach(priceBlock => {
+        p.vertex(
+          p.width-5 - (p.width * ((now - priceBlock.time)/this.TIME_SPAN)),
+          this.mapPrice(priceBlock.price)
         );
       });
+      p.vertex(p.width, this.mapPrice(this.currentPrice));
       p.endShape();
+
+      this.removeOldPriceBlocks();
     },
 
     mapPrice (price) {
@@ -69,19 +72,33 @@ export default {
     },
 
     addPrice (price) {
-      console.log("adding price");
       this.currentPrice = price;
       this.prices.push({
         price: this.currentPrice,
         time: Date.now(),
       });
-      if (this.prices.length > this.MAX_PRICE_HISTORY) {
-        this.prices = this.prices.slice(-1 * this.MAX_PRICE_HISTORY);
+    },
+
+    tagCurrentPrice () {
+      this.addPrice(this.currentPrice);
+    },
+
+    removeOldPriceBlocks () {
+      let cutOff = Date.now() - this.TIME_SPAN;
+      if (this.prices[0].time > cutOff) {
+        return;
       }
+      let lastOldPriceIndex = 0;
+      for (let i = 0; i < this.prices.length; i++) {
+        if (this.prices[i].time > cutOff) {
+          break;
+        }
+        lastOldPriceIndex = i;
+      }
+      this.prices.splice(0, lastOldPriceIndex);
     },
 
     keypressed (e) {
-      console.log(this.prices);
       console.log("key got pressed");
       switch (e.key) {
         case "b":
@@ -91,6 +108,9 @@ export default {
         case "s":
           console.log("shorting");
           this.sendMessage("s");
+          break;
+        case "t":
+          console.log(this.prices);
           break;
       }
     },
@@ -102,6 +122,7 @@ export default {
     messageRecieved (message) {
       const parsed = parseInt(message.data, 10);
       if (!isNaN(parsed)) {
+        this.tagCurrentPrice();
         this.addPrice(parsed);
       } else {
         console.log("is not an integer");
@@ -110,9 +131,6 @@ export default {
   },
 
   created: function() {
-    // console.log("Setting Key Binds");
-    // window.addEventListener('keydown', (e) => {this.keyPressed(e)});
-
     console.log("Starting connection");
     this.connection = new WebSocket("ws://localhost:7071");
 
