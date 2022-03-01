@@ -1,6 +1,6 @@
 <template>
   <div id="myScore">
-    <h2>{{score}}</h2>
+    <h2>{{Math.round(score)}}</h2>
   </div>
 </template>
 

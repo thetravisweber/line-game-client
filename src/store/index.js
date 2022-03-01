@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    connection: null,
     myScore: 0,
     myName: '',
     leaderboard: [{
@@ -18,6 +19,12 @@ export default new Vuex.Store({
     },
     getLeaderboard(state) {
       return state.leaderboard;
+    },
+    getUsername(state) {
+      return state.myName;
+    },
+    getConnection(state) {
+      return state.connection;
     }
   },
   mutations: {
@@ -27,9 +34,26 @@ export default new Vuex.Store({
     updateLeaderboard(state, payload) {
       console.log("leaderboard updated:", payload);
       state.leaderboard = payload;
+    },
+    setConnection(state, connection) {
+      console.log("Connection set");
+      state.connection = connection;
+    },
+    updateUsername(state, username) {
+      console.log("username updated");
+      state.myName = username;
     }
   },
   actions: {
+    sendMessage(state, message) {
+      const conn = state.getters.getConnection;
+      console.log(conn)
+      conn.send(message);
+    },
+    sendData(state, data) {
+      const message = JSON.stringify(data);
+      state.dispatch('sendMessage', message);
+    },
   },
   modules: {
   }
