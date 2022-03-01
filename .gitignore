@@ -2,7 +2,9 @@
 node_modules
 /dist
 yarn.lock
+.env
 
+public/line_image.png
 
 # local env files
 .env.local
