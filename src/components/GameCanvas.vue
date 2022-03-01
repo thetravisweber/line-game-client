@@ -110,22 +110,34 @@ export default {
         case "t":
           console.log(this.prices);
           break;
+        case "c":
+          console.log(this.conn);
+          break;
       }
     },
 
     sendMessage: function (message) {
-      this.connection.send(message);
+      if (!!this.username) {
+        this.connection.send(message);
+      }
     },
 
     messageRecieved (message) {
       const parsed = JSON.parse(message.data);
 
-      if (!isNaN(parsed.p)) {
+      if (!!parsed.p) {
         this.tagCurrentPrice();
         this.addPrice(parsed.p);
       }
-      this.$store.commit("updateMyScore", parsed.s);
-      this.$store.commit("updateLeaderboard", parsed.l);
+      if (!!parsed.l) {
+        this.$store.commit("updateLeaderboard", parsed.l);
+      }
+      if (!!parsed.s) {
+        this.$store.commit("updateMyScore", parsed.s);
+      }
+      if (!!parsed.n) {
+        this.$store.commit("updateUsername", parsed.n);
+      }
     }
   },
 
@@ -141,6 +153,12 @@ export default {
     this.connection.onmessage = this.messageRecieved;
 
     this.$store.commit("setConnection", this.connection);
+  },
+
+  computed: {
+    username() {
+      return this.$store.getters.getUsername;
+    }
   }
 };
 </script>

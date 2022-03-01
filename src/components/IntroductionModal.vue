@@ -30,6 +30,7 @@ export default {
   methods: {
     sendName() {
       console.log(this.name);
+      this.$store.dispatch('sendData', {"name": this.name});
     }
   }
 }

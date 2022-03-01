@@ -3,7 +3,7 @@
     <GameCanvas id="gameCanvas"/>
     <Leaderboard id="leaderboard" />
     <MyScore id="score"/>
-    <IntroductionModal v-if="!getConnection" id="introduction-modal"/>
+    <IntroductionModal v-if="!username" id="introduction-modal"/>
   </div>
 </template>
 
@@ -23,8 +23,8 @@ export default {
     IntroductionModal
   },
   computed: {
-    connection() {
-      return this.$state.getters.getConnection;
+    username() {
+      return this.$store.getters.getUsername;
     }
   }
 }
