@@ -139,6 +139,8 @@ export default {
     }
 
     this.connection.onmessage = this.messageRecieved;
+
+    this.$store.commit("setConnection", this.connection);
   }
 };
 </script>
