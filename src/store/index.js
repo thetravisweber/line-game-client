@@ -7,7 +7,10 @@ export default new Vuex.Store({
   state: {
     myScore: 0,
     myName: '',
-    leaderboard: [],
+    leaderboard: [{
+      "n": "holder",
+      "s": 0
+    }],
   },
   getters: {
     getMyScore(state) {
@@ -19,10 +22,10 @@ export default new Vuex.Store({
   },
   mutations: {
     updateMyScore(state, payload) {
-      console.log("score getting updated:", payload);
       state.myScore = payload;
     },
-    updateLeaderBoard(state, payload) {
+    updateLeaderboard(state, payload) {
+      console.log("leaderboard updated:", payload);
       state.leaderboard = payload;
     }
   },

@@ -98,7 +98,6 @@ export default {
     },
 
     keypressed (e) {
-      console.log("key got pressed");
       switch (e.key) {
         case "b":
           console.log("buying");
@@ -124,11 +123,9 @@ export default {
       if (!isNaN(parsed.p)) {
         this.tagCurrentPrice();
         this.addPrice(parsed.p);
-      } else {
-        console.log("is not an integer");
       }
-      console.log(parsed.l);
       this.$store.commit("updateMyScore", parsed.s);
+      this.$store.commit("updateLeaderboard", parsed.l);
     }
   },
 
