@@ -1,5 +1,4 @@
 <template>
-  <!-- <vue-p5 @sketch="sketch"></vue-p5> -->
   <vue-p5 v-on="{setup, draw, keypressed}"></vue-p5>
 </template>
 
@@ -120,13 +119,16 @@ export default {
     },
 
     messageRecieved (message) {
-      const parsed = parseInt(message.data, 10);
-      if (!isNaN(parsed)) {
+      const parsed = JSON.parse(message.data);
+
+      if (!isNaN(parsed.p)) {
         this.tagCurrentPrice();
-        this.addPrice(parsed);
+        this.addPrice(parsed.p);
       } else {
         console.log("is not an integer");
       }
+      console.log(parsed.l);
+      this.$store.commit("updateMyScore", parsed.s);
     }
   },
 
