@@ -143,7 +143,7 @@ export default {
 
   created: function() {
     console.log("Starting connection");
-    this.connection = new WebSocket("ws://localhost:7071");
+    this.connection = new WebSocket(process.env.VUE_APP_WS_URL);
 
     this.connection.onopen = function(event) {
       console.log(event);
