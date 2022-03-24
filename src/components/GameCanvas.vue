@@ -11,10 +11,6 @@ export default {
     // 1k per second
     const TIME_SPAN = 30000; // in ms
     let prices = [];
-    prices[0] = {
-      price: 100,
-      time: Date.now(),
-    };
     return {
       currentPrice: 100,
       prices: prices,
@@ -48,10 +44,6 @@ export default {
       p.stroke(0);
       p.noFill();
       p.beginShape();
-      if (this.prices.length == 0) {
-        console.log("no prices");
-        return;
-      }
       p.vertex(0, this.mapPrice(this.prices[0].price));
       let now = Date.now();
       this.prices.forEach(priceBlock => {
