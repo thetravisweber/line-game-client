@@ -27,7 +27,18 @@ export default {
       name: ''
     }
   },
+  mounted() {
+    this.sayHi();
+    window.addEventListener('keyup', (event) => {
+      if (event.key === 'Enter') { 
+        this.sendName();
+      }
+    });
+  },
   methods: {
+    sayHi() {
+      console.log("hello");
+    },
     sendName() {
       console.log(this.name);
       this.$store.dispatch('sendData', {"name": this.name});
