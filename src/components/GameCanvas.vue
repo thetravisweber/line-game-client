@@ -127,6 +127,7 @@ export default {
 
       if (!!parsed.p) {
         this.addPrice(parsed.p);
+        this.$store.commit("updateCurrentPrice", parsed.p);
       }
       if (!!parsed.l) {
         this.$store.commit("updateLeaderboard", parsed.l);

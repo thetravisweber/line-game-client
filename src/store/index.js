@@ -12,6 +12,7 @@ export default new Vuex.Store({
       "n": "holder",
       "s": 0
     }],
+    currentPrice: 100
   },
   getters: {
     getMyScore(state) {
@@ -25,6 +26,9 @@ export default new Vuex.Store({
     },
     getConnection(state) {
       return state.connection;
+    },
+    getCurrentPrice(state) {
+      return state.currentPrice;
     }
   },
   mutations: {
@@ -41,6 +45,9 @@ export default new Vuex.Store({
     updateUsername(state, username) {
       console.log("username updated");
       state.myName = username;
+    },
+    updateCurrentPrice(state, newPrice) {
+      state.currentPrice = newPrice;
     }
   },
   actions: {
