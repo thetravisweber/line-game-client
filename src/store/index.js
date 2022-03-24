@@ -32,7 +32,6 @@ export default new Vuex.Store({
       state.myScore = payload;
     },
     updateLeaderboard(state, payload) {
-      console.log("leaderboard updated:", payload);
       state.leaderboard = payload;
     },
     setConnection(state, connection) {
