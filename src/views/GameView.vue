@@ -2,7 +2,7 @@
   <div class="home">
     <GameCanvas id="gameCanvas"/>
     <Leaderboard id="leaderboard" />
-    <MyScore id="score"/>
+    <GameStatBar id="stats"/>
     <IntroductionModal v-if="!username" id="introduction-modal"/>
   </div>
 </template>
@@ -10,15 +10,15 @@
 <script>
 // @ is an alias to /src
 import GameCanvas from '@/components/GameCanvas.vue'
-import MyScore from '@/components/myScore.vue'
+import GameStatBar from '@/components/GameStatBar.vue'
 import Leaderboard from '@/components/Leaderboard.vue'
 import IntroductionModal from '@/components/IntroductionModal.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'GameView',
   components: {
     GameCanvas,
-    MyScore,
+    GameStatBar,
     Leaderboard,
     IntroductionModal
   },
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped>
-#score {
+#stats {
   position: absolute;
   top: 5%;
   right: 5%;
