@@ -8,7 +8,7 @@
             Enter Name:
           </label>
 
-          <input id="name-input" type="text" v-model="name" />
+          <input id="name-input" ref="nametext" type="text" v-model="name" />
 
           <button
               class="modal-default-button"
@@ -28,17 +28,17 @@ export default {
     }
   },
   mounted() {
-    this.sayHi();
     window.addEventListener('keyup', (event) => {
       if (event.key === 'Enter') { 
         this.sendName();
       }
     });
+
+    console.log(this.$refs);
+
+    this.$refs.nametext.focus();
   },
   methods: {
-    sayHi() {
-      console.log("hello");
-    },
     sendName() {
       console.log(this.name);
       this.$store.dispatch('sendData', {"name": this.name});
