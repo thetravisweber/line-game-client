@@ -126,7 +126,6 @@ export default {
       const parsed = JSON.parse(message.data);
 
       if (!!parsed.p) {
-        this.tagCurrentPrice();
         this.addPrice(parsed.p);
       }
       if (!!parsed.l) {
