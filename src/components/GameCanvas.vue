@@ -9,14 +9,16 @@ export default {
   
   data: function () {
     // 1k per second
-    const TIME_SPAN = 30000; // in ms
-    let prices = [];
     return {
       currentPrice: 100,
-      prices: prices,
-      TIME_SPAN: TIME_SPAN,
+      prices: [],
+      TIME_SPAN: 30000, // in ms (how long to keep records)
       p5: null,
       connection: null,
+      viewWindow: {
+        "min": 0,
+        "max": 200
+      },
     };
   },
 
@@ -33,19 +35,21 @@ export default {
       );
       sketch.background(200, 200, 200);
       sketch.frameRate(25);
+      this.updateViewWindow();
     },
 
     draw(p) {
       p.background(255);
       p.stroke(150);
       p.strokeWeight(4);
-      p.line(0, p.height/2, p.width, p.height/2);
+
+      this.drawBackgroundLines(p);
 
       p.stroke(0);
       p.noFill();
       p.beginShape();
       p.vertex(0, this.mapPrice(this.prices[0].price));
-      let now = Date.now();
+      const now = Date.now();
       this.prices.forEach(priceBlock => {
         p.vertex(
           p.width-5 - (p.width * ((now - priceBlock.time)/this.TIME_SPAN)),
@@ -55,11 +59,28 @@ export default {
       p.vertex(p.width, this.mapPrice(this.currentPrice));
       p.endShape();
 
+      this.updateViewWindow();
       this.removeOldPriceBlocks();
     },
 
+    drawBackgroundLines(p) {
+      let jump = 100;
+      let lineMarks = [];
+      for (let offset = this.viewWindow.min; offset < this.viewWindow.max; offset+=jump) {
+        lineMarks.push(p.round(offset / 100) * 100);
+      }
+      p.textSize(30);
+      lineMarks.forEach(price => {
+        const mapped = this.mapPrice(price);
+        p.text(price, p.width - 100, mapped-20);
+        p.line(0, mapped, p.width, mapped);
+      });
+      const mappedMax = this.mapPrice(this.viewWindow.max);
+      const mappedMin = this.mapPrice(this.viewWindow.min);
+    },
+
     mapPrice (price) {
-      return this.p5.map(price, 0, 200, this.p5.height, 0);
+      return this.p5.map(price, this.viewWindow.min, this.viewWindow.max, this.p5.height, 0);
     },
 
     addPrice (price) {
@@ -70,8 +91,23 @@ export default {
       });
     },
 
-    tagCurrentPrice () {
-      this.addPrice(this.currentPrice);
+    updateViewWindow() {
+      let recommendedSpread = 200 + this.p5.abs(this.currentPrice - 100);
+      if (this.currentPrice > this.viewWindow.max - recommendedSpread/4) {
+        let highGoal = this.currentPrice + recommendedSpread/4;
+        let lowGoal = this.currentPrice - 3*recommendedSpread/4;
+        this.larpToGoal(highGoal, lowGoal);
+      }
+      if (this.currentPrice < this.viewWindow.min + recommendedSpread/4) {
+        let highGoal = this.currentPrice + 3*recommendedSpread/4;
+        let lowGoal = this.currentPrice - recommendedSpread/4;
+        this.larpToGoal(highGoal, lowGoal);
+      }
+    },
+
+    larpToGoal(highGoal, lowGoal) {
+      this.viewWindow.max += (highGoal - this.viewWindow.max) / 20;
+      this.viewWindow.min += (lowGoal - this.viewWindow.min) / 20;
     },
 
     removeOldPriceBlocks () {
@@ -101,6 +137,7 @@ export default {
           break;
         case "t":
           console.log(this.prices);
+          console.log(this.viewWindow.min + " - " + this.viewWindow.max);
           break;
         case "c":
           console.log(this.conn);
