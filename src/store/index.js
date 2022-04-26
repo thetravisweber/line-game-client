@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
     connection: null,
     myScore: 0,
+    myOwns: 0,
+    myOrders: 0,
     myName: '',
     leaderboard: [{
       "n": "holder",
@@ -17,6 +19,12 @@ export default new Vuex.Store({
   getters: {
     getMyScore(state) {
       return state.myScore;
+    },
+    getMyOwns(state) {
+      return state.myOwns;
+    },
+    getMyOrders(state) {
+      return state.myOrders;
     },
     getLeaderboard(state) {
       return state.leaderboard;
@@ -34,6 +42,12 @@ export default new Vuex.Store({
   mutations: {
     updateMyScore(state, payload) {
       state.myScore = payload;
+    },
+    updateMyOwns(state, payload) {
+      state.myOwns = payload;
+    },
+    updateMyOrders(state, payload) {
+      state.myOrders = payload;
     },
     updateLeaderboard(state, payload) {
       state.leaderboard = payload;
@@ -53,7 +67,7 @@ export default new Vuex.Store({
   actions: {
     sendMessage(state, message) {
       const conn = state.getters.getConnection;
-      console.log(conn)
+      console.log(conn);
       conn.send(message);
     },
     sendData(state, data) {

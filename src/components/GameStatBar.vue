@@ -1,15 +1,19 @@
 <template>
   <div id="myScore">
-    <h2>My Profit: ${{score.toFixed(2)}}</h2>
-    <h2>Current Price: ${{price.toFixed(2)}}</h2>
+    <h4>Buy Orders: {{orders}}</h4>
+    <h4>Own: {{own}}</h4>
+    <h4>Price: ${{price.toFixed(2)}}</h4>
   </div>
 </template>
 
 <script>
 export default {
   computed: {
-    score() {
-      return this.$store.getters.getMyScore;
+    orders() {
+      return this.$store.getters.getMyOrders;
+    },
+    own() {
+      return this.$store.getters.getMyOwns;
     },
     price() {
       return this.$store.getters.getCurrentPrice;

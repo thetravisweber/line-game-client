@@ -2,7 +2,7 @@
   <div>
     <ol>
       <li v-for="(user, index) in leaderboard" :key="index" class="lbrow">
-        <h4 class="lbname">{{user.n}}</h4>
+        <h4 class="lbname">{{leftJustified(user.n, 10)}}</h4>
         <h4 class="lbdivider">:</h4>
         <h4 class="lbscore">{{Math.round(user.s, 2)}}</h4>
       </li>
@@ -16,6 +16,11 @@ export default {
     leaderboard() {
       return this.$store.getters.getLeaderboard;
     }
+  },
+  methods: {
+    leftJustified(name, width) {
+      return name + "".repeat(width - name.length);
+    }
   }
 }
 </script>
@@ -25,7 +30,7 @@ h4 {
   padding: 0;
   margin: 0;
   margin-left: 4px;
-  display: inline;;
+  display: inline;
 }
 
 .lbrow {

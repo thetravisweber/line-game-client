@@ -52,7 +52,7 @@ export default {
       const now = Date.now();
       this.prices.forEach(priceBlock => {
         p.vertex(
-          p.width-5 - (p.width * ((now - priceBlock.time)/this.TIME_SPAN)),
+          p.width-2 - (p.width * ((now - priceBlock.time)/this.TIME_SPAN)),
           this.mapPrice(priceBlock.price)
         );
       });
@@ -166,6 +166,11 @@ export default {
       }
       if (!!parsed.n) {
         this.$store.commit("updateUsername", parsed.n);
+      }
+      if (!!parsed.sum) {
+        // console.log(parsed.sum);
+        this.$store.commit("updateMyOwns", parsed.sum.own);
+        this.$store.commit("updateMyOrders", parsed.sum.orders);
       }
     }
   },
