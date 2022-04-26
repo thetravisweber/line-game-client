@@ -65,9 +65,12 @@ export default {
 
     drawBackgroundLines(p) {
       let jump = 100;
+      if (p.abs(this.currentPrice) > 3200) {
+        jump = 1000;
+      }
       let lineMarks = [];
       for (let offset = this.viewWindow.min; offset < this.viewWindow.max; offset+=jump) {
-        lineMarks.push(p.round(offset / 100) * 100);
+        lineMarks.push(p.round(offset / jump) * jump);
       }
       p.textSize(30);
       lineMarks.forEach(price => {
