@@ -127,10 +127,12 @@ export default {
 
     keypressed (e) {
       switch (e.key) {
+        case "ArrowUp":
         case "b":
           console.log("buying");
           this.sendMessage("b");
           break;
+        case "ArrowDown":
         case "s":
           console.log("shorting");
           this.sendMessage("s");
