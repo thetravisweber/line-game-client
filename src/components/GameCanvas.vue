@@ -1,5 +1,5 @@
 <template>
-  <vue-p5 v-on="{setup, draw, keypressed, touchEnded}"></vue-p5>
+  <vue-p5 v-on="{setup, draw, keypressed, mouseclicked}"></vue-p5>
 </template>
 
 <script>
@@ -145,7 +145,7 @@ export default {
       }
     },
 
-    touchEnded() {
+    mouseclicked() {
       // if not likely to be a mobile device
       if (this.p5.width > 1200) return;
       // top of screen
