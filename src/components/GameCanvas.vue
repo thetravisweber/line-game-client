@@ -1,5 +1,5 @@
 <template>
-  <vue-p5 v-on="{setup, draw, keypressed}"></vue-p5>
+  <vue-p5 v-on="{setup, draw, keypressed, touchEnded}"></vue-p5>
 </template>
 
 <script>
@@ -142,6 +142,21 @@ export default {
         case "c":
           console.log(this.conn);
           break;
+      }
+    },
+
+    touchEnded() {
+      // if not likely to be a mobile device
+      if (this.p5.width > 1200) return;
+      // top of screen
+      if (this.p5.mouseY < this.p5.height * .4) {
+        console.log("buying");
+        this.sendMessage("b");
+      } 
+      // bottom of screen
+      else if (this.p5.mouseY > this.p5.height * .6) {
+        console.log("shorting");
+        this.sendMessage("s");
       }
     },
 

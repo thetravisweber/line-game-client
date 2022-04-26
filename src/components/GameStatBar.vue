@@ -1,7 +1,7 @@
 <template>
   <div id="myScore">
     <h4>Buy Orders: {{orders}}</h4>
-    <h4>Own: {{own}}</h4>
+    <h4>Shares Owned: {{own}}</h4>
     <h4>Price: ${{price.toFixed(2)}}</h4>
   </div>
 </template>
