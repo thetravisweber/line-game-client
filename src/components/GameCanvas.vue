@@ -65,9 +65,13 @@ export default {
 
     drawBackgroundLines(p) {
       let jump = 100;
-      if (p.abs(this.currentPrice) > 3200) {
+      let spread = this.spread();
+      if (spread > 22000) {
+        jump = 10000;
+      } else if (spread > 2200) {
         jump = 1000;
       }
+      
       let lineMarks = [];
       for (let offset = this.viewWindow.min; offset < this.viewWindow.max; offset+=jump) {
         lineMarks.push(p.round(offset / jump) * jump);
@@ -78,8 +82,6 @@ export default {
         p.text(price, p.width - 100, mapped-20);
         p.line(0, mapped, p.width, mapped);
       });
-      const mappedMax = this.mapPrice(this.viewWindow.max);
-      const mappedMin = this.mapPrice(this.viewWindow.min);
     },
 
     mapPrice (price) {
@@ -95,7 +97,7 @@ export default {
     },
 
     updateViewWindow() {
-      let recommendedSpread = 200 + this.p5.abs(this.currentPrice - 100);
+      let recommendedSpread = this.spread();
       if (this.currentPrice > this.viewWindow.max - recommendedSpread/4) {
         let highGoal = this.currentPrice + recommendedSpread/4;
         let lowGoal = this.currentPrice - 3*recommendedSpread/4;
@@ -108,9 +110,13 @@ export default {
       }
     },
 
+    spread() {
+      return 200 + this.p5.abs(this.currentPrice / 2.5);
+    },
+
     larpToGoal(highGoal, lowGoal) {
-      this.viewWindow.max += (highGoal - this.viewWindow.max) / 20;
-      this.viewWindow.min += (lowGoal - this.viewWindow.min) / 20;
+      this.viewWindow.max += (highGoal - this.viewWindow.max) / 10;
+      this.viewWindow.min += (lowGoal - this.viewWindow.min) / 10;
     },
 
     removeOldPriceBlocks () {
